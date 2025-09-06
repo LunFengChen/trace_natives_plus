@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# author: LunFengChen
+# date: 2025-09-06
 import os
 import sys
 import time
@@ -9,7 +11,7 @@ import idautils
 import idc
 
 
-class TraceNatives(idaapi.plugin_t):
+class TraceNativesModified(idaapi.plugin_t):
     flags = idaapi.PLUGIN_PROC
     comment = "Generate frida-trace command for all native functions"
     help = "Trace functions and export 'frida-trace' command to txt"
@@ -156,8 +158,8 @@ class TraceNatives(idaapi.plugin_t):
 
 
 def PLUGIN_ENTRY():
-    return TraceNatives()
+    return TraceNativesModified()
 
 
 if __name__ == "__main__":
-    print("请在IDA中使用此脚本作为插件运行。 主要逻辑在TraceNatives类的trace_natives中。")
+    print("请在IDA中使用此脚本作为插件运行。 主要逻辑在TraceNativesModified类的trace_natives中。")
