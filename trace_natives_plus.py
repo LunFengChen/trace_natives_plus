@@ -204,6 +204,7 @@ class TraceNativesPlusDialog(QDialog):
                 f.write(" ".join(args))
             print(f"[+] 已保存: {output_path}")
             print(f"[+] frida-trace -UF -O {output_path}")
+            QMessageBox.information(self, "完成", f"已导出 {len(functions)} 个函数\n{output_path}")
         else:
             num_batches = (len(args) + batch_size - 1) // batch_size
             print(f"[*] 分 {num_batches} 批，每批 {batch_size} 个")
@@ -213,6 +214,7 @@ class TraceNativesPlusDialog(QDialog):
                 with open(output_path, "w", encoding="utf-8") as f:
                     f.write(" ".join(batch))
                 print(f"[+] 批次 {i+1}: frida-trace -UF -O {output_path} -o batch_{i+1}.log")
+            QMessageBox.information(self, "完成", f"已导出 {len(functions)} 个函数，分 {num_batches} 批\n{output_dir}")
     
     def _run_trace_keyword(self):
         keyword = self.keyword_input.text().strip()
@@ -246,6 +248,7 @@ class TraceNativesPlusDialog(QDialog):
         print(f"[+] 已保存: {output_path}")
         print(f"[+] 函数列表: {func_path}")
         print(f"[+] frida-trace -UF -O {output_path}")
+        QMessageBox.information(self, "完成", f"已导出 {len(filtered)} 个函数\n{output_path}")
 
 
 class TraceNativesPlus(idaapi.plugin_t):
