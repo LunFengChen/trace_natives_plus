@@ -9,6 +9,11 @@
 
 为啥要有？ flutter 或者 游戏app的so函数太多了，直接frida-trace会崩溃但是分批还好，且过滤也不好，如我只想过滤 `encrypt` 的函数看走没走;
 
+## 截图
+
+![UI](imgs/1.png)
+
+![Result](imgs/2.png)
 
 ## 安装
 
