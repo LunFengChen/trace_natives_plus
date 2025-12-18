@@ -1,21 +1,51 @@
-作用：ida插件，把所有函数都捕捉然后生成`frida-trace`命令，并支持复制到剪切板，快捷键 `Ctrl+Shift+H`
-
-原版readme可以去看 [Pr0214/trace_natives](https://github.com/Pr0214/trace_natives)
-
-这个仓库主要改了什么:
-1. 添加分批trace的功能， 主要是对抗so函数非常多的情况
-2. 优化使用体验和代码
-    - 添加快捷键 `Ctrl+Shift+H` (H->hook)
-    - 全部trace直接复制到剪切板
-    - 代码加注释，采取PEP8规范，并直接使用面向对象写法
-
-其他：
-1. 如果需要关键次过滤可以看 [LunFengChen/traceFuncByKeyword](https://github.com/LunFengChen/traceFuncByKeyword)
-2. ida插件练手用的，为后面的自动化去ollvm混淆插件做一些铺垫(但感觉之后也搞不出来hhh)
+# Trace Natives Plus
 
 
-自我评价: 有点用但不是特别有用
+## 解决什么问题？
+在原始项目 [Pr0214/trace_natives](https://github.com/Pr0214/trace_natives) (批量 trace 功能) 的基础上新增如下功能：
+
+1. **分批导出** 避免一次 hook 太多函数导致卡死
+2. **关键字过滤** 只 trace 你关心的函数（如 encrypt、sign、md5）
+
+为啥要有？ flutter 或者 游戏app的so函数太多了，直接frida-trace会崩溃但是分批还好，且过滤也不好，如我只想过滤 `encrypt` 的函数看走没走;
 
 
-反馈：issue或者进q群：686725227；
+## 安装
 
+将 `trace_natives_plus.py` 复制到 IDA 插件目录，我的是 `C:\software\idaPro9.2\plugins\` 下
+
+## 使用
+
+快捷键: `Ctrl+Alt+T`
+
+或菜单: `Edit -> Plugins -> Trace Natives Plus`
+
+### Trace All
+
+选择分批数量：
+- 不分批 - 导出所有函数到单个文件
+- 5000/10000/20000/50000 - 按指定数量分批导出
+
+### Trace by Keyword
+
+支持链式过滤语法：
+- `,` 表示 OR（同组内任一匹配）
+- `|` 表示 AND（链式过滤）
+
+示例：
+```
+encrypt,crypto|md5,sha,aes|sign
+```
+含义：先筛选包含 encrypt 或 crypto 的函数，再从结果中筛选包含 md5/sha/aes 的，最后筛选包含 sign 的。
+
+## 输出
+
+所有文件输出到 so 文件同目录下的 `trace_natives_plus/` 文件夹。
+
+## 依赖
+
+- IDA Pro 7.x+
+- Python 3.x
+- PyQt5（IDA 自带）
+
+---
